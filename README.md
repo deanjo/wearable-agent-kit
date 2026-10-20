@@ -2,77 +2,59 @@
 
 [简体中文](README.zh-CN.md)
 
-**Give an agent a reproducible path from wearable data to an evidence-aware summary.** Start offline, authorize locally, read WHOOP or Garmin, and preserve what is known about dates, freshness, and missing records.
+**Bring data from your health devices to a personal AI assistant so you can understand changes in sleep, recovery, and training, manage health information, and get evidence-based reports.** This toolkit helps developers build a personal health assistant, currently for one user running locally through a terminal.
 
-The reusable parts are provider libraries, local encrypted state, checkpoint recovery, and a read-only MCP interface. The teaching material explains failure modes and the evidence required before saying an integration works.
+The goal is to help an assistant:
+- Gather traceable body data, with its source and measurement time
+- Explain changes using personal context you provide and available historical trends
+- Produce personal health reports with conclusions, evidence, habit suggestions, and missing information
 
-## Who it is for
+**The toolkit supplies data access and descriptive summaries; the connected agent handles deeper interpretation and habit suggestions.** For example, ask “How did I sleep last night, and has my training changed recently?” The assistant reads the data before answering and explains when the available history is insufficient.
 
-Developers and agents building **single-user, self-hosted** integrations. WHOOP uses its official OAuth/API; Garmin uses an **unofficial personal Connect route**, separate from Garmin's official developer program. Neither vendor provides or endorses this project's MCP adapter.
+## Start in three steps
 
-## Shortest path: no account needed
+Use a trusted Linux/macOS machine with Git and **Node.js 24+**. No third-party runtime dependencies need installing.
 
-Requires Node.js **24+**. No third-party runtime packages are required.
+**1. Get the project.**
+
+```sh
+git clone https://github.com/deanjo/wearable-agent-kit.git
+cd wearable-agent-kit
+```
+
+**2. Run the offline flow first.** No account or real health data is needed.
 
 ```sh
 npm run doctor
 npm run verify
 ```
 
-The default path is **synthetic**. To inspect its checkpoint explicitly:
+**3. Connect your account and assistant.** Follow the [quickstart](docs/en/quickstart.md) for local authorization, a real read, and MCP configuration (the protocol assistants use to call tools). Enter passwords, passphrases, and tokens only on your machine, never in chat.
 
-```sh
-npm run collect -- --output /tmp/wak-checkpoint.json
-npm run read -- --checkpoint /tmp/wak-checkpoint.json
-```
+## What a report should contain
 
-For local authorization, live reads, or MCP setup, follow the [quickstart](docs/en/quickstart.md). Never send account passwords or tokens to an agent conversation.
+Ask the assistant to cover four points; see the [analysis guide](docs/en/analysis-guide.md):
+- **Conclusion:** observable changes in sleep, recovery, or training
+- **Evidence:** sources, measurement dates, and comparable historical records
+- **Suggestions:** everyday habits to discuss or try, without diagnosis or treatment
+- **Gaps:** missing data and conclusions that cannot yet be drawn
 
-## What counts as success
+## How data reaches your assistant
 
-1. Offline tests pass.
-2. A synthetic collection produces a checkpoint.
-3. A separate process reads that checkpoint.
-4. Live acceptance is recorded separately: user-authorized read, measurement times, coverage, restart recovery, and refresh behavior.
-
-See [validation](docs/validation.md). Fake-transport tests do not verify a real account or production service. A scheduler and verified delivery are separate work.
-
-## Architecture and limits
+Device → vendor platform → this toolkit → agent → personal health report.
 
 ![Local runtime architecture](docs/architecture/architecture-en.png)
 
-[Interactive HTML](docs/architecture/architecture-en.html) · [SVG](docs/architecture/architecture-en.svg) · [Diagram source and verification notes](docs/architecture/README.md). Download the HTML and open it in a local browser; GitHub's file view does not run it.
+“Provider” in the diagram means service integration code. The read-only MCP tool is implemented by this project. Download the HTML from [interactive diagrams and sources](docs/architecture/README.md) to open it locally; GitHub's file view does not run it.
 
-The default is synthetic. A live run selects one provider; authorization and vault unlock happen in a local TTY. The encrypted credential vault and the optional plaintext summary checkpoint are different stores.
+## Current status and limits
 
-Agent → this project's MCP adapter → provider library → WHOOP API / Garmin Connect.
+The kit provides WHOOP's official API integration, unofficial Garmin Connect access (Garmin international/global accounts only), an encrypted local credential vault, and read-only tools. It does not yet include a long-term health record, automatic multi-device merging, or scheduled report delivery. One-click access from the dot cloud is not supported.
 
-The MCP adapter is project code. WHOOP supplies its official API, not this adapter. Garmin integration includes upstream-derived code with attribution in `THIRD_PARTY_NOTICES.md`; it is not all original or an official Garmin MCP.
+`doctor` checks the environment. `verify` checks files, runs 105 offline tests, and reopens a synthetic summary in a new process. Passing does not prove a live connection: the output includes `liveProviderAcceptance: false`. This release has not completed real-account acceptance; see [validation](docs/validation.md).
 
-Each deployer keeps their own encrypted session state in an explicitly selected local directory. The vault passphrase is entered locally and is not saved with the vault. The running process can decrypt authorized state while unlocked; a compromised machine or process can therefore access it. This project supplies no central credential-hosting service. See the [quickstart](docs/en/quickstart.md) for exact local inputs.
+A live run selects one provider. Authorization and unlocking require a TTY (an interactive terminal); GUI clients without one cannot unlock live mode. Credentials are encrypted, but exported summaries are plaintext: keep them in a private location outside the repository. Before deployment, review the use restrictions in [WHOOP's API terms](https://developer.whoop.com/api-terms-of-use/) and the [security boundaries](SECURITY.md). A disclaimer does not replace permission.
 
-```text
-src/
-  providers/        WHOOP official API; Garmin unofficial Connect
-  core/             contracts and local authorization/state helpers
-  analysis/         descriptive, evidence-aware summaries
-  mcp/              local read-only stdio interface
-scripts/            environment checks and offline verification
-tests/              synthetic fixtures and regression tests
-deploy/reference/   local client configuration
-examples/           synthetic examples
-docs/en/            quickstart, capabilities, troubleshooting, analysis guide
-docs/zh-CN/         corresponding Chinese guides
-```
+## Go deeper
 
-Local stdio is the initial agent transport. Remote dot/other agent platforms need a reviewed runtime adapter and identity boundary; this is not a ready-made multi-user hosted service. No raw waveform, full-device synchronization, diagnostic advice, or punctual scheduled-delivery guarantee is made. See [capabilities](docs/en/capabilities.md).
-
-## Find the next step
-
-- **Agent instructions:** [AGENTS.md](AGENTS.md)
-- **Login, callback, refresh, pagination, or stale tools:** [troubleshooting](docs/en/troubleshooting.md)
-- **Turn records into a careful report:** [analysis guide](docs/en/analysis-guide.md)
-- **Secrets and publication review:** [SECURITY.md](SECURITY.md)
-- **License and upstream attribution:** [LICENSE](LICENSE), [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
-
-Review [WHOOP's API terms](https://developer.whoop.com/api-terms-of-use/) before deployment or redistribution for a specific use. Its 2026-10-06 terms restrict professional-advice uses and embedding developer credentials in open source. A disclaimer does not establish permission.
+[Capabilities](docs/en/capabilities.md) · [Troubleshooting](docs/en/troubleshooting.md) · [Agent instructions](AGENTS.md) · [MIT license](LICENSE) · [Upstream attribution](THIRD_PARTY_NOTICES.md)
