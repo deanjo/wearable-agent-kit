@@ -1,0 +1,7 @@
+{
+  "note": "Documentation only. CLI accepts flags, not this file. Secrets are entered through a controlling terminal.",
+  "provider": "garmin",
+  "timeZone": "Asia/Manila",
+  "stateDirectory": "/absolute/private/path/outside/repository",
+  "mode": "synthetic"
+}
