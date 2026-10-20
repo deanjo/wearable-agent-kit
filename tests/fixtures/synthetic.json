@@ -1,0 +1,5 @@
+{
+  "fixture": true,
+  "whoop": {"primarySleep":{"start":"2026-01-01T15:00:00Z","end":"2026-01-01T23:00:00Z","nap":false,"totalSleepMinutes":420},"latestNap":{"start":"2026-01-02T05:00:00Z","end":"2026-01-02T05:25:00Z","nap":true},"recovery":{"score":70,"hrvMs":50,"restingHeartRate":55,"cycleMatched":false}},
+  "garmin":{"days":["2026-01-02"],"activityCoverage":"api_pagination_exhausted","activityPagination":{"status":"api_pagination_exhausted","pages":2},"deviceSyncCompleteness":"unknown","snapshotConsistency":"not_guaranteed","heartRate":[{"date":"2026-01-02","samples":[[1767333600000,70],[1767333660000,null],[1767333720000,80]],"sampleCount":3,"validSampleCount":2}],"activities":[{"startTimeGMT":"2026-01-02T06:00:00Z","duration":1200,"activityType":"walking"}]}
+}
