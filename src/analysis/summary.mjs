@@ -1,0 +1,6 @@
+// Transparent descriptions only. No readiness prescription, disease model or score.
+export function describeData(data){
+  const hr=(data.heartRate??data.garmin?.heartRate??[]).map(day=>{const valid=(day.samples??[]).filter(p=>Array.isArray(p)&&Number.isFinite(p[0])&&Number.isFinite(p[1]));return {date:day.date,validPointCount:valid.length,firstMeasuredAt:valid.length?new Date(Math.min(...valid.map(p=>p[0]))).toISOString():null,lastMeasuredAt:valid.length?new Date(Math.max(...valid.map(p=>p[0]))).toISOString():null,meanOfObservedSamples:valid.length?Math.round(valid.reduce((n,p)=>n+p[1],0)/valid.length*10)/10:null};});
+  return {heartRate:hr,activityTotalComputed:false,recoverySleepLink:'unknown unless provider explicitly matches cycle',method:'Mean uses only observed valid samples; not a time-weighted daily mean.'};
+}
+export function duplicateCandidates(left,right,toleranceMs=120000){const results=[];for(let i=0;i<left.length;i++)for(let j=0;j<right.length;j++){const a=Date.parse(left[i].start??left[i].startTimeGMT),b=Date.parse(right[j].start??right[j].startTimeGMT);if(Number.isFinite(a)&&Number.isFinite(b)&&Math.abs(a-b)<=toleranceMs)results.push({leftIndex:i,rightIndex:j,status:'candidate_only',reason:'start_times_close'});}return results;}
