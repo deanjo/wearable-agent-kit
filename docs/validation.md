@@ -44,6 +44,16 @@ On **2026-10-20 at 08:01:03 UTC**, Node.js **24.19.0**, `npm run doctor` and `np
 
 **2026-10-20 08:01:03 UTC**，Node.js **24.19.0** 下，`npm run doctor` 与 `npm run verify` 成功退出：**105 项通过、0 项失败**；验收期间禁用网络，合成采集成功，新进程读回检查点成功。真实服务商验收为 **false**。这是开发快照的记录，不证明后续版本；代码变更后应重跑。
 
+## Security and diagram update / 安全与图示更新
+
+On **2026-10-20 at 09:53:30 UTC**, the integrated update ran under Node.js **24.19.0**: **128 tests passed, 0 failed**, 75 inventory entries verified, network denied, synthetic collection and a fresh-process checkpoint read succeeded. Live-provider acceptance remains **false**. The update adds day-option validation, bounded regular-file checkpoint reads, credential-directory output protection, and rejection of live WHOOP plaintext checkpoint exports. These checks are not a complete security audit or proof of downstream encryption.
+
+**2026-10-20 09:53:30 UTC**，集成更新在 Node.js **24.19.0** 下通过 **128 项测试，0 失败**，核对 75 项清单；禁网合成采集及新进程检查点读回成功，真实服务商验收仍为 **false**。新增日期参数校验、检查点普通文件有界读取、凭据目录输出保护，以及真实 WHOOP 明文检查点导出拒绝。这不等于完整安全审计或下游加密证明。
+
+Dark bilingual diagrams passed static and JavaScript syntax checks and visual inspection of their PNG previews. Final real-browser interaction acceptance is still pending; see [diagram validation](architecture/README.md). No account or real health data was accessed for this update.
+
+双语暗色图通过静态检查、JavaScript 语法检查和 PNG 预览目视检查；最终真实浏览器交互验收仍待完成，见[图示验收说明](architecture/README.md)。本次更新未访问账号或真实健康数据。
+
 ## Source inventory / 源码清单
 
 `verify` also compares file names and SHA-256 hashes against `RELEASE_MANIFEST.json` (excluding `.git` and the manifest itself). This detects changes relative to the supplied inventory; it does not authenticate the publisher. Keep generated checkpoints and private state outside the repository. After an intentional reviewed source/document edit, run `node scripts/update-manifest.mjs`, review the resulting diff, then rerun verification.
