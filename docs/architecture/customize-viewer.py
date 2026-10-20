@@ -4,6 +4,9 @@ from pathlib import Path
 p=Path(__file__).resolve().parent
 for f in sorted(p.glob('*.html')):
  lang='zh-CN' if f.stem.endswith('zh-CN') else 'en';s=f.read_text()
+ # Migrate previously customized pages as well as freshly rendered output.
+ s=s.replace('Choose a scenario below for offline, live-read or storage paths. ', '')
+ s=s.replace('；用下方场景切换离线、真实读取与存储边界。', '。')
  if '<!-- WAK local sharing guard v1 -->' not in s:
   guard="location.protocol === 'file:' || location.hostname === 'localhost' || location.hostname.endsWith('.localhost') || location.hostname === '127.0.0.1' || location.hostname === '[::1]'"
   s=s.replace('function readerLink(state) {', 'function readerLink(state) {\n      if ('+guard+') return null;')
@@ -31,7 +34,7 @@ html[data-theme="dark"] .diagram-container { box-shadow: 0 18px 70px rgba(0,0,0,
 </style>
 '''
  s=s.replace('</head>',css+'</head>')
- hint=('点击节点查看相邻关系；用下方场景切换离线、真实读取与存储边界。右上角可暂停动态。<strong>动画仅示意架构关系，不是实时同步或健康数据。</strong>' if lang!='en' else 'Select a node to highlight its neighbors. Choose a scenario below for offline, live-read or storage paths. Pause motion in the toolbar. <strong>Animation illustrates architecture, not live sync or health data.</strong>')
+ hint=('点击节点查看相邻关系。右上角可暂停动态。<strong>动画仅示意架构关系，不是实时同步或健康数据。</strong>' if lang!='en' else 'Select a node to highlight its neighbors. Pause motion in the toolbar. <strong>Animation illustrates architecture, not live sync or health data.</strong>')
  if f.stem.startswith('architecture'):
   hint += (' <strong>当前导出限制：明文检查点仅用于合成/Garmin；WHOOP live 的 --output 被拒绝。</strong>' if lang!='en' else ' <strong>Current export policy: plaintext checkpoints are for synthetic/Garmin only; live WHOOP --output is rejected.</strong>')
  if f.stem.startswith('overview'):

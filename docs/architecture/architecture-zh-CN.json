@@ -10,47 +10,7 @@
       "url": "https://github.com/deanjo/wearable-agent-kit",
       "revision": "f56a5b4458155d676777f006a04e9ee6da8d7ecf"
     },
-    "visual_preset": "signal-flow",
-    "views": [
-      {
-        "id": "offline",
-        "label": "默认离线路径",
-        "focus": [
-          "agent",
-          "entry",
-          "pipeline",
-          "synthetic",
-          "summary",
-          "checkpoint"
-        ],
-        "note": "合成样例，不联网或解锁凭据库。"
-      },
-      {
-        "id": "live",
-        "label": "授权后的真实读取",
-        "focus": [
-          "entry",
-          "pipeline",
-          "provider",
-          "api",
-          "vault",
-          "summary"
-        ],
-        "note": "每次只选一个 provider；只读也可能刷新令牌。"
-      },
-      {
-        "id": "storage",
-        "label": "凭据与数据边界",
-        "focus": [
-          "entry",
-          "provider",
-          "vault",
-          "summary",
-          "checkpoint"
-        ],
-        "note": "vault 加密，报告检查点明文；均依赖可信本机。"
-      }
-    ]
+    "visual_preset": "signal-flow"
   },
   "components": [
     {

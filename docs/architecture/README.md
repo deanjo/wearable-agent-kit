@@ -30,11 +30,11 @@ Authorization is an explicit human-facing `auth` command using the local TTY. WH
 
 ## Interactive reader / 交互阅读
 
-The HTML starts in a dark signal-flow theme. Animation uses one **Live / Still** control, with a remembered explicit pause. Reduced-motion preferences stop motion. Click a node to highlight its authored neighbors and inspect source references; the technical diagram's three scenario buttons focus the offline path, authorized live read, or secrets/data boundary. Theme switching remains available, while the visual-style chooser is hidden to keep the toolbar simpler. Motion is illustrative; it does not indicate actual requests or synchronization.
+The HTML starts in a dark signal-flow theme. Animation uses one **Live / Still** control, with a remembered explicit pause. The reader includes reduced-motion handling; its browser behavior still requires verification. Click a node to highlight its authored neighbors and inspect source references. Theme switching remains available, while the visual-style chooser is hidden to keep the toolbar simpler. Motion is illustrative; it does not indicate actual requests or synchronization.
 
 **GitHub PNG/SVG previews are static and cannot play the HTML animation.** Download the HTML for the interactive reader. When opened from `file://` or localhost, copy-view-link buttons are disabled to avoid sharing a private filesystem path or a link that others cannot open; share the HTML file instead. Source-reference links remain available. The viewer adds no health API calls and does not send diagram content to an online rendering service.
 
-HTML 默认深色流光主题，仅保留一个 **动态 / 静止** 动画开关，并记住主动暂停；系统减少动态偏好优先。点击节点联动高亮已有相邻关系并查看源码，技术图的三个场景按钮分别聚焦离线、授权后的真实读取、凭据与数据边界。保留明暗切换，隐藏多余视觉风格选择。动画只表示图中关系，不表示真实请求或同步状态。
+HTML 默认深色流光主题，仅保留一个 **动态 / 静止** 动画开关，并记住主动暂停；代码包含系统减少动态偏好处理，其浏览器行为仍待验证。点击节点联动高亮已有相邻关系并查看源码。保留明暗切换，隐藏多余视觉风格选择。动画只表示图中关系，不表示真实请求或同步状态。
 
 **GitHub 的 PNG/SVG 预览是静态图，不会播放 HTML 动画。** 下载 HTML 可使用交互阅读器。从 `file://` 或 localhost 打开时，复制视图链接按钮禁用，避免分享个人本地路径或无效地址；应分享 HTML 文件，源码链接不受影响。页面不会调用健康 API，也不向在线绘图服务传输内容。
 
@@ -42,11 +42,15 @@ HTML 默认深色流光主题，仅保留一个 **动态 / 静止** 动画开关
 
 Download the HTML file and open it in your local browser. GitHub's blob/file page displays source and does **not** run the viewer. There is no GitHub Pages deployment for these files. The viewer is self-contained; following source links needs internet access.
 
-Archify's schema, source-reference, layout and HTML/SVG static checks passed for the original technical HTML artifacts and the new overview artifacts. The static SVGs were extracted without executing viewer JavaScript, frozen to the dark signal-flow palette, rasterized with installed Inkscape, and visually inspected in both languages. They are not claimed to be outputs of the viewer's Export menu. **The automated real-browser gate could not run in the authoring environment, so interactive browser acceptance remains unverified.** No real account or health data was accessed for these diagrams. Local diagnostic logs and provenance sidecars are intentionally not published.
+Archify's schema, source-reference, layout and HTML/SVG static checks passed for the original technical HTML artifacts and the new overview artifacts. The static SVGs were extracted without executing viewer JavaScript, frozen to the dark signal-flow palette, rasterized with installed Inkscape, and visually inspected in both languages. They are not claimed to be outputs of the viewer's Export menu. **The automated real-browser gate could not run in the authoring environment. A separate Chrome check of an earlier two-file technical-diagram build verified dark themes, Live/Still, pause persistence after refresh, and neighboring-node highlighting in both languages; English reachability tracing, zoom and drag also passed. It found that the promised scenario controls were absent. This revision removes that promise and the unused source configuration instead of adding new controls. The final four-file build and reduced-motion behavior still await browser verification.** No real account or health data was accessed for these diagrams. Local diagnostic logs and provenance sidecars are intentionally not published.
 
 下载 HTML 后用本地浏览器打开。GitHub 文件页不会执行交互内容，也没有为本图部署 GitHub Pages。HTML 自包含；点击源码链接需联网。
 
-双语 HTML 的 schema、源码引用、布局与 HTML/SVG 静态检查通过。静态 SVG 从生成页面提取，固定深色流光样式，以已有 Inkscape 栅格化，并完成双语视觉检查；不声称使用过页面的 Export 菜单。**制作环境未能完成真实浏览器自动验收，交互行为尚未验证。** 制作未访问真实账号或健康数据；不发布本地诊断日志和环境路径。
+双语 HTML 的 schema、源码引用、布局与 HTML/SVG 静态检查通过。静态 SVG 从生成页面提取，固定深色流光样式，以已有 Inkscape 栅格化，并完成双语视觉检查；不声称使用过页面的 Export 菜单。**制作环境未能完成真实浏览器自动验收。另一次 Chrome 检查针对较早的双语技术图，已验证暗色、动态/静止、刷新后保留暂停与相邻节点高亮；英文上下游追踪、缩放、拖动也通过。检查发现文案承诺的场景控件不存在，本轮删除该承诺及未使用的源配置，不新增控件。最终四文件版本和减少动态行为仍待浏览器验收。** 制作未访问真实账号或健康数据；不发布本地诊断日志和环境路径。
+
+Browser evidence applies only to predecessor HTML SHA-256 `1a2da2e76441f3c16000a87cddc5bc28f3c99ed162fe3575831c03a6b992c747` (EN) and `ea8c29dd1da0778fb0606669eb9bafa23c916da7b92a95d8cbdd2cf700817a00` (中文). It does not establish acceptance of later changes or the overview diagrams.
+
+上述浏览器证据仅适用于列出的旧版本哈希，不证明后续改动或概览图已通过。
 
 ## Rebuild / 重建
 
@@ -58,6 +62,7 @@ for name in architecture-en architecture-zh-CN overview-en overview-zh-CN; do
 done
 python3 docs/architecture/customize-viewer.py
 python3 docs/architecture/extract-static.py
+python3 docs/architecture/check-reader-contract.py
 for name in architecture-en architecture-zh-CN overview-en overview-zh-CN; do
   inkscape "docs/architecture/$name.svg" --export-type=png --export-width=2360 --export-filename="docs/architecture/$name.png"
 done

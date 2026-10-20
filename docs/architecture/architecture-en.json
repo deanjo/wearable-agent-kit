@@ -10,47 +10,7 @@
       "url": "https://github.com/deanjo/wearable-agent-kit",
       "revision": "f56a5b4458155d676777f006a04e9ee6da8d7ecf"
     },
-    "visual_preset": "signal-flow",
-    "views": [
-      {
-        "id": "offline",
-        "label": "Offline default",
-        "focus": [
-          "agent",
-          "entry",
-          "pipeline",
-          "synthetic",
-          "summary",
-          "checkpoint"
-        ],
-        "note": "Synthetic fixture. No network or vault unlock."
-      },
-      {
-        "id": "live",
-        "label": "Authorized live read",
-        "focus": [
-          "entry",
-          "pipeline",
-          "provider",
-          "api",
-          "vault",
-          "summary"
-        ],
-        "note": "One provider per run. Reads may refresh tokens."
-      },
-      {
-        "id": "storage",
-        "label": "Secrets and data",
-        "focus": [
-          "entry",
-          "provider",
-          "vault",
-          "summary",
-          "checkpoint"
-        ],
-        "note": "Encrypted vault, plaintext report checkpoint; trust the local machine."
-      }
-    ]
+    "visual_preset": "signal-flow"
   },
   "components": [
     {
