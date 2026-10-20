@@ -1,0 +1,6 @@
+{
+  "name": "wearable-agent-kit", "version": "0.1.0", "private": true,
+  "description": "Single-user WHOOP and unofficial Garmin read-only agent reference",
+  "type": "module", "engines": {"node": ">=24"}, "license": "MIT",
+  "scripts": {"test": "node --test tests/providers/*.test.mjs tests/acceptance/*.test.mjs", "doctor": "node scripts/doctor.mjs", "verify": "node scripts/verify.mjs", "collect": "node src/cli.mjs collect", "read": "node src/cli.mjs read", "auth": "node src/cli.mjs auth", "mcp": "node src/cli.mjs mcp"}
+}
