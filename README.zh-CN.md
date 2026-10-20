@@ -39,6 +39,12 @@ npm run read -- --checkpoint /tmp/wak-checkpoint.json
 
 ## 架构与边界
 
+![本地运行架构](docs/architecture/architecture-zh-CN.png)
+
+[交互 HTML](docs/architecture/architecture-zh-CN.html) · [SVG](docs/architecture/architecture-zh-CN.svg) · [图源与验收说明](docs/architecture/README.md)。下载 HTML 后用本地浏览器打开；GitHub 文件页面不会执行交互页面。
+
+默认使用合成模式；live 每次只选一个服务商，在本地 TTY 完成授权和解锁。加密凭据库与可选的明文摘要检查点是两种不同存储。
+
 Agent → 本项目 MCP 适配器 → Provider 库 → WHOOP API / Garmin Connect。
 
 MCP 适配器由本项目实现。WHOOP 提供官方 API，不提供这个适配器；Garmin 接入含上游衍生代码，归属见 `THIRD_PARTY_NOTICES.md`，不声称全部原创或属于官方 Garmin MCP。

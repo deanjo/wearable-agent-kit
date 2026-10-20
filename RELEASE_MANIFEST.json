@@ -5,6 +5,18 @@
     ".gitignore": "73d69c3596a6ebd2598e66ea6287edf024fa07ad142fed80f608b8b777a7c7e1",
     "AGENTS.md": "1798852bc821ff914c2c1e0cb8a1ae3c973ef50311aefb656d9a49d2c10ce9b3",
     "deploy/reference/mcp.example.json": "e67c4cb5b103f0f9e29d202437cd388e1e15c4bbec02c733c1602fdcbf9ed5ab",
+    "docs/architecture/ARCHIFY-LICENSE.txt": "b799ab081703e7821ae5096d2c1abdf14bbdc75e8ea1c4045998c36ed6db9706",
+    "docs/architecture/architecture-en.html": "9a25751a9bdd8307e1c1a3b46c9c6fb78fa55b051f531f576bc5fe8161e06c87",
+    "docs/architecture/architecture-en.json": "2b6553d590a74919df52704952f143483b2276c0c0d1bce6340e442c7c6c83c4",
+    "docs/architecture/architecture-en.png": "67dd7bca4584a0ee7cecd7b38afe5a88e7a223849881a6353c601c60d37430c6",
+    "docs/architecture/architecture-en.svg": "d82eb67f77b5f568029c36c4f3e2abad83fc39b4b6b566cad7529666ef3bdf76",
+    "docs/architecture/architecture-zh-CN.html": "580619b016ddc8120237d73df56fb11b31db4022dc25d76096098cf07cb666bb",
+    "docs/architecture/architecture-zh-CN.json": "be4097c8453b9c3fd57ae641c19d0a5fd3c0ec44a5a87f6cd8a856ded3a67cff",
+    "docs/architecture/architecture-zh-CN.png": "133be2a59c415b9d202787344c48978ccbc77076bf56d4275ea4f7993407eae8",
+    "docs/architecture/architecture-zh-CN.svg": "a5bbe35ae5dfcbcbe08c7a95bd3c1d1c8c6a8e3b8fa629a817b29d2d2e2042b0",
+    "docs/architecture/extract-static.py": "00d27a259e6f35e787907e2b1c038511d8ef68cb1e8b3317937529d6180fc105",
+    "docs/architecture/JetBrainsMono-OFL.txt": "c1ab7c666206842a02b35b30770dac0d7a10156ed401c9defc3f02a754d89e90",
+    "docs/architecture/README.md": "86115c66ef3f438d2d065cd4276bba006009984c2da670719e136649b02105fc",
     "docs/en/analysis-guide.md": "c7f56888c787dd50ba86cd43fe0131e639f3d1984d033c432305edb4d8c7c4b4",
     "docs/en/capabilities.md": "7412cecb7ea4d9cd509bc808498a4ece4cebb715ee9e468a68e64fce2757e3f9",
     "docs/en/quickstart.md": "8761327c5b508da72bbc7c1b5d1a662fd059cce334cdcb0fe5699cd80ef06312",
@@ -17,8 +29,8 @@
     "examples/config.example.json": "88bff8af8b59bb87d9fae6b05d32b049092399dd440b03c0a87cae3aeee3100e",
     "LICENSE": "6680b849455c01cabf8c6560ebdccc245e6ae18308c54d0323b70247202eef6c",
     "package.json": "98ca1fd6be9c1e31bb165a22151bd9123bf0f9a7bd3e4d0c37708515a052a8c4",
-    "README.md": "87fba7685be4990b01a8758b56be74f1371b23da878d6b164cd7bbd50aa6bb30",
-    "README.zh-CN.md": "e71d2bc8192485e2bd332b5a527f2678d7d7835df2d1fb6c27de3656adcc0ba4",
+    "README.md": "499e76443c2049a70191ee6ac3725210b22d6e3efe68d51fd0356a920698097a",
+    "README.zh-CN.md": "e1f1ca277e361f38373d9faa6216de0fe16f6c87e50b477f0264e9d332afb96c",
     "scripts/check-integrity.mjs": "3a87cc9f2a10f3d0e37ade032347ac4043a4a4b0bf231fdb1a3982df23e92411",
     "scripts/deny-network.mjs": "7ad13b74998cdfab27bdbb344ff8fe62ebb0a21bbc3c7c28da8e83d710d68c80",
     "scripts/doctor.mjs": "e4908153e24a1f7e008215a85ba13e90d3b0348635788fd944dd066d42368c37",
@@ -52,6 +64,6 @@
     "tests/providers/protocol.test.mjs": "471e4f187d20c57318f5029dbd98edd042658a23c6e365ad266617627cb5c8b3",
     "tests/providers/session.test.mjs": "5affd00050d75674154ca67c28b982fe088daf52885a07b77e4ffae13016acc3",
     "tests/providers/whoop.test.mjs": "e9356f724bbf77069d4787588ef25f0e043de6e8366597de9b1efce8e420d8b2",
-    "THIRD_PARTY_NOTICES.md": "9755e0dd7deb012afc64437e9da16b11833d7c7a435d51ff9c163077868d5183"
+    "THIRD_PARTY_NOTICES.md": "a35f6b18b1fc0711d9ae5641358681198985ed6255b5acadb62f384da466a6c0"
   }
 }

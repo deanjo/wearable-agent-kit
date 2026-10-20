@@ -39,6 +39,12 @@ See [validation](docs/validation.md). Fake-transport tests do not verify a real 
 
 ## Architecture and limits
 
+![Local runtime architecture](docs/architecture/architecture-en.png)
+
+[Interactive HTML](docs/architecture/architecture-en.html) · [SVG](docs/architecture/architecture-en.svg) · [Diagram source and verification notes](docs/architecture/README.md). Download the HTML and open it in a local browser; GitHub's file view does not run it.
+
+The default is synthetic. A live run selects one provider; authorization and vault unlock happen in a local TTY. The encrypted credential vault and the optional plaintext summary checkpoint are different stores.
+
 Agent → this project's MCP adapter → provider library → WHOOP API / Garmin Connect.
 
 The MCP adapter is project code. WHOOP supplies its official API, not this adapter. Garmin integration includes upstream-derived code with attribution in `THIRD_PARTY_NOTICES.md`; it is not all original or an official Garmin MCP.
