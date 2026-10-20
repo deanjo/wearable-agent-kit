@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "wearable-agent-kit": {
+      "command": "node",
+      "args": ["/absolute/path/to/wearable-agent-kit/src/cli.mjs", "mcp"]
+    }
+  }
+}
