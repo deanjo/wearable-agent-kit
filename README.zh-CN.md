@@ -29,7 +29,7 @@ npm run doctor
 npm run verify
 ```
 
-**3. 接入自己的账号和助手。** 按[快速开始](docs/zh-CN/quickstart.md)完成本地授权、真实读取和 MCP（供助手调用工具的协议）配置。密码、口令和令牌只在本机输入，不要发进聊天。
+**3. 接入自己的账号和助手。** 按[快速开始](docs/zh-CN/quickstart.md)完成本地授权、真实读取和 MCP（供助手调用工具的协议）配置。通过本地授权流程输入凭据，不要发进聊天；必要认证信息会发送给对应服务商。
 
 ## 能得到怎样的报告
 
@@ -43,17 +43,21 @@ npm run verify
 
 设备 → 厂商平台 → 本项目 → Agent → 个人健康报告。
 
-![本地运行架构](docs/architecture/architecture-zh-CN.png)
+![身体数据如何成为个人健康报告](docs/architecture/overview-zh-CN.png)
 
-图中 Provider 是服务商接入代码；只读 MCP 工具由本项目实现。[交互图与图源](docs/architecture/README.md)中的 HTML 需下载后本地打开，GitHub 文件页不能直接运行。
+[打开暗色交互图与技术架构](docs/architecture/README.md)：下载 HTML 后用浏览器打开，可点击节点查看联动，并开关流光动画。GitHub 上方仅显示静态预览。只读 MCP 工具由本项目实现。
+
+## 安全使用
+
+只读工具也会传出健康数据。本地接入不代表助手的模型在本机运行：先确认接收方、保存方式和授权范围，只提供必要数据。凭据库加密，但终端输出、报告和客户端日志可能是明文，须私有保存，勿公开或提交到 Git。详见[安全说明](SECURITY.md)。
 
 ## 当前进度与边界
 
 已提供 WHOOP 官方 API（数据接口）、Garmin 非官方 Connect 接入（佳明仅国际区）、本地加密凭据库和只读工具。尚未内置长期健康档案、多设备自动融合或定时发报告系统，也不支持 dot 云端一键连接。
 
-`doctor` 检查环境；`verify` 核对文件、运行 105 项离线测试，并用新进程读回合成摘要。成功不等于真实接入：输出 `liveProviderAcceptance: false`，本版本尚未完成真实账号验收，见[验收说明](docs/validation.md)。
+`doctor` 检查环境；`verify` 核对文件、运行离线测试（数量以当次输出为准），并用新进程读回合成摘要。成功不等于真实接入：输出 `liveProviderAcceptance: false`，本版本尚未完成真实账号验收，见[验收说明](docs/validation.md)。
 
-真实模式每次选一家服务商，授权和解锁需要 TTY（交互终端），无终端的图形客户端暂不支持。凭据库加密，但导出的摘要是明文，应存于仓库外私有位置。部署前审查 [WHOOP API 条款](https://developer.whoop.com/api-terms-of-use/)中的用途限制及[安全边界](SECURITY.md)；免责声明不能替代许可。
+真实模式每次选一家服务商，授权和解锁需要 TTY（交互终端），无终端的图形客户端暂不支持。部署前审查 [WHOOP API 条款](https://developer.whoop.com/api-terms-of-use/)中的用途、加密和保留限制及[安全边界](SECURITY.md)；私有文件权限不等于加密或合规。
 
 ## 深入了解
 

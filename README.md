@@ -29,7 +29,7 @@ npm run doctor
 npm run verify
 ```
 
-**3. Connect your account and assistant.** Follow the [quickstart](docs/en/quickstart.md) for local authorization, a real read, and MCP configuration (the protocol assistants use to call tools). Enter passwords, passphrases, and tokens only on your machine, never in chat.
+**3. Connect your account and assistant.** Follow the [quickstart](docs/en/quickstart.md) for local authorization, a real read, and MCP configuration (the protocol assistants use to call tools). Use the local authorization flow, never chat, for credentials; required authentication information is sent to the relevant provider.
 
 ## What a report should contain
 
@@ -43,17 +43,21 @@ Ask the assistant to cover four points; see the [analysis guide](docs/en/analysi
 
 Device → vendor platform → this toolkit → agent → personal health report.
 
-![Local runtime architecture](docs/architecture/architecture-en.png)
+![From wearable records to a personal report](docs/architecture/overview-en.png)
 
-“Provider” in the diagram means service integration code. The read-only MCP tool is implemented by this project. Download the HTML from [interactive diagrams and sources](docs/architecture/README.md) to open it locally; GitHub's file view does not run it.
+[Open the dark interactive diagrams and technical architecture](docs/architecture/README.md): download an HTML file and open it in a browser to focus connected nodes and toggle flowing animation. GitHub displays only the static preview above. This project implements the read-only MCP tool.
+
+## Use it safely
+
+Read-only tools still disclose health data. A local connection does not mean the assistant’s model runs locally: review who receives the data, retention, and your authorization scope, and share only what is needed. The credential vault is encrypted, but terminal output, reports, and client logs may be plaintext: keep them private, and do not publish them or commit them to Git. See [security](SECURITY.md).
 
 ## Current status and limits
 
 The kit provides WHOOP's official API integration, unofficial Garmin Connect access (Garmin international/global accounts only), an encrypted local credential vault, and read-only tools. It does not yet include a long-term health record, automatic multi-device merging, or scheduled report delivery. One-click access from the dot cloud is not supported.
 
-`doctor` checks the environment. `verify` checks files, runs 105 offline tests, and reopens a synthetic summary in a new process. Passing does not prove a live connection: the output includes `liveProviderAcceptance: false`. This release has not completed real-account acceptance; see [validation](docs/validation.md).
+`doctor` checks the environment. `verify` checks files, runs offline tests (see the current output for the count), and reopens a synthetic summary in a new process. Passing does not prove a live connection: the output includes `liveProviderAcceptance: false`. This release has not completed real-account acceptance; see [validation](docs/validation.md).
 
-A live run selects one provider. Authorization and unlocking require a TTY (an interactive terminal); GUI clients without one cannot unlock live mode. Credentials are encrypted, but exported summaries are plaintext: keep them in a private location outside the repository. Before deployment, review the use restrictions in [WHOOP's API terms](https://developer.whoop.com/api-terms-of-use/) and the [security boundaries](SECURITY.md). A disclaimer does not replace permission.
+A live run selects one provider. Authorization and unlocking require a TTY (an interactive terminal); GUI clients without one cannot unlock live mode. Before deployment, review the use, encryption, and retention requirements in [WHOOP's API terms](https://developer.whoop.com/api-terms-of-use/) and the [security boundaries](SECURITY.md). Private file permissions do not establish encryption or compliance.
 
 ## Go deeper
 
