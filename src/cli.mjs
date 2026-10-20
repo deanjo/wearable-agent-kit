@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { openSecretStore } from './core/storage/secret-store.mjs';
-import { writeCheckpoint,readCheckpoint } from './core/storage/checkpoint.mjs';
+import { writeCheckpoint,readCheckpoint,assertCheckpointOutsideState } from './core/storage/checkpoint.mjs';
 import { promptSecret,promptText } from './core/prompt.mjs';
 import { wrapSummary,yesterday } from './core/contracts.mjs';
 import { describeData } from './analysis/summary.mjs';
@@ -12,6 +12,11 @@ function argumentsOf(args){const options={};for(let i=0;i<args.length;i++){const
 async function main(){
   const [command,...args]=process.argv.slice(2),o=argumentsOf(args);
   if(!['auth','collect','read','mcp'].includes(command))throw Error('COMMAND_REQUIRED');
+  // WHOOP data exports need an encrypted-at-rest design, not plaintext checkpoints.
+  if(o['--live']&&o['--provider']==='whoop'&&o['--output']&&['collect','read'].includes(command))throw Error('WHOOP_PLAINTEXT_EXPORT_UNSUPPORTED');
+  // A day selects Garmin's local-date query only; never silently ignore it.
+  if(o['--day']!==undefined&&(!o['--live']||o['--provider']!=='garmin'||command==='auth'||o['--checkpoint']))throw Error('DAY_OPTION_REQUIRES_LIVE_GARMIN_READ');
+  if(o['--output']&&o['--state-dir'])await assertCheckpointOutsideState(o['--output'],o['--state-dir']);
   const timeZone=o['--timezone']??'Asia/Manila';new Intl.DateTimeFormat('en',{timeZone});
   if(command==='read'&&o['--checkpoint']){console.log(JSON.stringify(await readCheckpoint(resolve(o['--checkpoint'])),null,2));return;}
   let store,provider=o['--provider'];
@@ -32,6 +37,6 @@ async function main(){
     return {...wrapSummary({mode:o['--live']?'live':'synthetic',provider:o['--live']?provider:'combined-fixture',data,now,timeZone}),analysis:describeData(data)};
   };
   if(command==='mcp'){await serveMcp(read);return;}
-  const result=await read();if(o['--output'])await writeCheckpoint(resolve(o['--output']),result);console.log(JSON.stringify(result,null,2));
+  const result=await read();if(o['--output']){if(o['--state-dir'])await assertCheckpointOutsideState(o['--output'],o['--state-dir']);await writeCheckpoint(resolve(o['--output']),result);}console.log(JSON.stringify(result,null,2));
 }
 main().catch(error=>{const code=error?.code??error?.message;process.stderr.write(JSON.stringify({error:typeof code==='string'&&/^[A-Za-z][A-Za-z0-9_]{2,80}$/.test(code)?code:'OPERATION_FAILED'})+'\n');process.exitCode=1;});
