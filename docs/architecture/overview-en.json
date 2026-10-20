@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "From body data to an evidence-aware personal report",
+    "locale": "en",
+    "output": "docs/architecture/overview-en.html",
+    "quality_profile": "showcase",
+    "visual_preset": "signal-flow",
+    "repository": {
+      "url": "https://github.com/deanjo/wearable-agent-kit",
+      "revision": "e2c8c44888e69b2a087adeda4f3f987517438d50"
+    },
+    "legend": {
+      "mode": "hidden"
+    }
+  },
+  "components": [
+    {
+      "id": "devices",
+      "type": "external",
+      "pos": [
+        40,
+        40
+      ],
+      "size": [
+        220,
+        76
+      ],
+      "label": "Your wearable devices",
+      "sublabel": "Sleep · recovery · activity",
+      "sources": [
+        {
+          "path": "README.md",
+          "line": 5,
+          "end_line": 12
+        },
+        {
+          "path": "README.md",
+          "line": 42,
+          "end_line": 44
+        }
+      ]
+    },
+    {
+      "id": "vendor",
+      "type": "cloud",
+      "pos": [
+        370,
+        40
+      ],
+      "size": [
+        220,
+        76
+      ],
+      "label": "Vendor platform",
+      "sublabel": "WHOOP / Garmin Connect",
+      "sources": [
+        {
+          "path": "README.md",
+          "line": 42,
+          "end_line": 56
+        },
+        {
+          "path": "docs/en/capabilities.md",
+          "line": 7,
+          "end_line": 13
+        }
+      ]
+    },
+    {
+      "id": "kit",
+      "type": "security",
+      "pos": [
+        700,
+        40
+      ],
+      "size": [
+        220,
+        76
+      ],
+      "label": "Local toolkit",
+      "sublabel": "One provider · authorized",
+      "sources": [
+        {
+          "path": "src/cli.mjs",
+          "line": 18,
+          "end_line": 35
+        },
+        {
+          "path": "README.md",
+          "line": 52,
+          "end_line": 56
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "type": "backend",
+      "pos": [
+        700,
+        260
+      ],
+      "size": [
+        220,
+        76
+      ],
+      "label": "Traceable data",
+      "sublabel": "Source · time · coverage",
+      "sources": [
+        {
+          "path": "src/core/contracts.mjs",
+          "line": 3,
+          "end_line": 9
+        },
+        {
+          "path": "src/analysis/summary.mjs",
+          "line": 2,
+          "end_line": 5
+        },
+        {
+          "path": "docs/en/capabilities.md",
+          "line": 15,
+          "end_line": 22
+        }
+      ]
+    },
+    {
+      "id": "agent",
+      "type": "frontend",
+      "pos": [
+        370,
+        260
+      ],
+      "size": [
+        220,
+        76
+      ],
+      "label": "Your trusted agent",
+      "sublabel": "External analysis role",
+      "sources": [
+        {
+          "path": "README.md",
+          "line": 5,
+          "end_line": 12
+        },
+        {
+          "path": "src/mcp/server.mjs",
+          "line": 1,
+          "end_line": 13
+        },
+        {
+          "path": "SECURITY.md",
+          "line": 3,
+          "end_line": 11
+        }
+      ]
+    },
+    {
+      "id": "report",
+      "type": "backend",
+      "pos": [
+        40,
+        260
+      ],
+      "size": [
+        220,
+        76
+      ],
+      "label": "Personal health report",
+      "sublabel": "Evidence + limits + habits",
+      "sources": [
+        {
+          "path": "README.md",
+          "line": 34,
+          "end_line": 40
+        },
+        {
+          "path": "docs/en/analysis-guide.md",
+          "line": 13,
+          "end_line": 31
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "devices-vendor",
+      "from": "devices",
+      "to": "vendor",
+      "label": "vendor sync"
+    },
+    {
+      "id": "vendor-kit",
+      "from": "vendor",
+      "to": "kit",
+      "label": "authorized read"
+    },
+    {
+      "id": "kit-evidence",
+      "from": "kit",
+      "to": "evidence",
+      "label": "wrap records"
+    },
+    {
+      "id": "evidence-agent",
+      "from": "evidence",
+      "to": "agent",
+      "label": "read-only MCP"
+    },
+    {
+      "id": "agent-report",
+      "from": "agent",
+      "to": "report",
+      "label": "interpret"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "What the kit supplies",
+      "items": [
+        "Read one authorized source locally; preserve measurement/retrieval times, gaps and coverage.",
+        "Expose a read-only MCP tool to your trusted agent. The default is synthetic and needs no account."
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Agent and report",
+      "items": [
+        "Deeper interpretation, user-provided context and habit suggestions belong to the external agent.",
+        "Reports distinguish conclusions, evidence, comparable history and unknowns. No diagnosis or treatment."
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Safety and present limits",
+      "items": [
+        "One trusted local user. TTY authorization, encrypted vault, plaintext report exports. The agent receives health information: review trust and permissions.",
+        "Device sync is outside this kit and may be incomplete. WHOOP official OAuth/API; Garmin unofficial route.",
+        "No built-in long-term health record, automatic multi-device merging or scheduled delivery. Motion is not live health data."
+      ]
+    }
+  ]
+}

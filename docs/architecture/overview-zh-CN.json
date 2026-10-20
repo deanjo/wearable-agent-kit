@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "身体数据如何成为有依据的个人报告",
+    "locale": "zh-CN",
+    "output": "docs/architecture/overview-zh-CN.html",
+    "quality_profile": "showcase",
+    "visual_preset": "signal-flow",
+    "repository": {
+      "url": "https://github.com/deanjo/wearable-agent-kit",
+      "revision": "e2c8c44888e69b2a087adeda4f3f987517438d50"
+    },
+    "legend": {
+      "mode": "hidden"
+    }
+  },
+  "components": [
+    {
+      "id": "devices",
+      "type": "external",
+      "pos": [
+        40,
+        40
+      ],
+      "size": [
+        220,
+        76
+      ],
+      "label": "你的可穿戴设备",
+      "sublabel": "睡眠 · 恢复 · 活动",
+      "sources": [
+        {
+          "path": "README.md",
+          "line": 5,
+          "end_line": 12
+        },
+        {
+          "path": "README.md",
+          "line": 42,
+          "end_line": 44
+        }
+      ]
+    },
+    {
+      "id": "vendor",
+      "type": "cloud",
+      "pos": [
+        370,
+        40
+      ],
+      "size": [
+        220,
+        76
+      ],
+      "label": "厂商数据平台",
+      "sublabel": "WHOOP / Garmin Connect",
+      "sources": [
+        {
+          "path": "README.md",
+          "line": 42,
+          "end_line": 56
+        },
+        {
+          "path": "docs/en/capabilities.md",
+          "line": 7,
+          "end_line": 13
+        }
+      ]
+    },
+    {
+      "id": "kit",
+      "type": "security",
+      "pos": [
+        700,
+        40
+      ],
+      "size": [
+        220,
+        76
+      ],
+      "label": "本地工具包",
+      "sublabel": "单一来源 · 明确授权",
+      "sources": [
+        {
+          "path": "src/cli.mjs",
+          "line": 18,
+          "end_line": 35
+        },
+        {
+          "path": "README.md",
+          "line": 52,
+          "end_line": 56
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "type": "backend",
+      "pos": [
+        700,
+        260
+      ],
+      "size": [
+        220,
+        76
+      ],
+      "label": "可追溯的数据",
+      "sublabel": "来源 · 时间 · 覆盖范围",
+      "sources": [
+        {
+          "path": "src/core/contracts.mjs",
+          "line": 3,
+          "end_line": 9
+        },
+        {
+          "path": "src/analysis/summary.mjs",
+          "line": 2,
+          "end_line": 5
+        },
+        {
+          "path": "docs/en/capabilities.md",
+          "line": 15,
+          "end_line": 22
+        }
+      ]
+    },
+    {
+      "id": "agent",
+      "type": "frontend",
+      "pos": [
+        370,
+        260
+      ],
+      "size": [
+        220,
+        76
+      ],
+      "label": "你授权的 Agent",
+      "sublabel": "外部分析职责",
+      "sources": [
+        {
+          "path": "README.md",
+          "line": 5,
+          "end_line": 12
+        },
+        {
+          "path": "src/mcp/server.mjs",
+          "line": 1,
+          "end_line": 13
+        },
+        {
+          "path": "SECURITY.md",
+          "line": 3,
+          "end_line": 11
+        }
+      ]
+    },
+    {
+      "id": "report",
+      "type": "backend",
+      "pos": [
+        40,
+        260
+      ],
+      "size": [
+        220,
+        76
+      ],
+      "label": "个人健康报告",
+      "sublabel": "证据 + 局限 + 日常习惯",
+      "sources": [
+        {
+          "path": "README.md",
+          "line": 34,
+          "end_line": 40
+        },
+        {
+          "path": "docs/en/analysis-guide.md",
+          "line": 13,
+          "end_line": 31
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "devices-vendor",
+      "from": "devices",
+      "to": "vendor",
+      "label": "厂商同步"
+    },
+    {
+      "id": "vendor-kit",
+      "from": "vendor",
+      "to": "kit",
+      "label": "授权读取"
+    },
+    {
+      "id": "kit-evidence",
+      "from": "kit",
+      "to": "evidence",
+      "label": "封装记录"
+    },
+    {
+      "id": "evidence-agent",
+      "from": "evidence",
+      "to": "agent",
+      "label": "只读 MCP"
+    },
+    {
+      "id": "agent-report",
+      "from": "agent",
+      "to": "report",
+      "label": "分析整理"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "本项目负责什么",
+      "items": [
+        "本地读取单一已授权来源，保留测量时间、读取时间与缺失/覆盖说明。",
+        "只读 MCP 交给你信任的 Agent；默认合成模式，无需账号。"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Agent 与报告",
+      "items": [
+        "更深入解释、结合你提供的个人背景与习惯建议属于外部 Agent 职责。",
+        "报告先给有依据的结论，再列来源、时间、对比与无法判断的部分。不是诊断或治疗。"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "安全与当前边界",
+      "items": [
+        "仅单用户可信本机；TTY 授权，vault 加密，但导出报告明文。Agent 会接收健康信息，应事先评估信任与权限。",
+        "厂商同步在项目之外，不保证全量；WHOOP 官方 OAuth/API，Garmin 非官方路径。",
+        "不内置长期健康档案、多设备自动融合或定时送达。动画不是实时健康数据。"
+      ]
+    }
+  ]
+}

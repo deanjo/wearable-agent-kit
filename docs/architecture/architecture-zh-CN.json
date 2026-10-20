@@ -9,7 +9,48 @@
     "repository": {
       "url": "https://github.com/deanjo/wearable-agent-kit",
       "revision": "f56a5b4458155d676777f006a04e9ee6da8d7ecf"
-    }
+    },
+    "visual_preset": "signal-flow",
+    "views": [
+      {
+        "id": "offline",
+        "label": "默认离线路径",
+        "focus": [
+          "agent",
+          "entry",
+          "pipeline",
+          "synthetic",
+          "summary",
+          "checkpoint"
+        ],
+        "note": "合成样例，不联网或解锁凭据库。"
+      },
+      {
+        "id": "live",
+        "label": "授权后的真实读取",
+        "focus": [
+          "entry",
+          "pipeline",
+          "provider",
+          "api",
+          "vault",
+          "summary"
+        ],
+        "note": "每次只选一个 provider；只读也可能刷新令牌。"
+      },
+      {
+        "id": "storage",
+        "label": "凭据与数据边界",
+        "focus": [
+          "entry",
+          "provider",
+          "vault",
+          "summary",
+          "checkpoint"
+        ],
+        "note": "vault 加密，报告检查点明文；均依赖可信本机。"
+      }
+    ]
   },
   "components": [
     {
@@ -303,7 +344,8 @@
       "title": "运行与输出",
       "items": [
         "Agent 通过 stdio 调用只读 MCP；CLI 也可直接 collect/read。",
-        "摘要返回调用方；read --checkpoint 独立离线读回。MCP 默认不读检查点。"
+        "摘要返回调用方；read --checkpoint 独立离线读回。MCP 默认不读检查点。",
+        "动态仅示意已有关系，不代表实时请求、同步状态或数据验收。"
       ]
     },
     {
