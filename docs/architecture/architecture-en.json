@@ -1,0 +1,329 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Wearable Agent Kit · Local single-user architecture",
+    "locale": "en",
+    "output": "docs/architecture/architecture-en.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/deanjo/wearable-agent-kit",
+      "revision": "f56a5b4458155d676777f006a04e9ee6da8d7ecf"
+    }
+  },
+  "components": [
+    {
+      "id": "agent",
+      "type": "external",
+      "label": "Agent client",
+      "sublabel": "Trusted recipient",
+      "pos": [
+        40,
+        40
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/mcp/server.mjs",
+          "line": 1,
+          "end_line": 13
+        }
+      ]
+    },
+    {
+      "id": "entry",
+      "type": "frontend",
+      "label": "Local CLI / MCP server",
+      "sublabel": "TTY unlock for live",
+      "pos": [
+        340,
+        40
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/cli.mjs",
+          "line": 12,
+          "end_line": 25
+        },
+        {
+          "path": "src/mcp/server.mjs",
+          "line": 15,
+          "end_line": 28
+        }
+      ]
+    },
+    {
+      "id": "pipeline",
+      "type": "backend",
+      "label": "Read pipeline",
+      "sublabel": "Mode + provider selected",
+      "pos": [
+        640,
+        40
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/cli.mjs",
+          "line": 27,
+          "end_line": 35
+        }
+      ]
+    },
+    {
+      "id": "synthetic",
+      "type": "backend",
+      "label": "Synthetic fixture",
+      "sublabel": "DEFAULT · no network",
+      "pos": [
+        940,
+        40
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/cli.mjs",
+          "line": 29,
+          "end_line": 32
+        }
+      ]
+    },
+    {
+      "id": "summary",
+      "type": "backend",
+      "label": "Evidence summary",
+      "sublabel": "Mode · times · coverage",
+      "pos": [
+        340,
+        260
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/cli.mjs",
+          "line": 32,
+          "end_line": 35
+        },
+        {
+          "path": "src/core/contracts.mjs",
+          "line": 3,
+          "end_line": 9
+        },
+        {
+          "path": "src/analysis/summary.mjs",
+          "line": 2,
+          "end_line": 5
+        }
+      ]
+    },
+    {
+      "id": "checkpoint",
+      "type": "database",
+      "label": "Optional checkpoint",
+      "sublabel": "PLAINTEXT JSON + SHA-256",
+      "pos": [
+        40,
+        260
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/core/storage/checkpoint.mjs",
+          "line": 1,
+          "end_line": 9
+        },
+        {
+          "path": "src/cli.mjs",
+          "line": 16,
+          "end_line": 16
+        },
+        {
+          "path": "src/cli.mjs",
+          "line": 35,
+          "end_line": 35
+        }
+      ]
+    },
+    {
+      "id": "provider",
+      "type": "backend",
+      "label": "Local provider adapter",
+      "sublabel": "LIVE · choose ONE",
+      "pos": [
+        640,
+        260
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/cli.mjs",
+          "line": 29,
+          "end_line": 30
+        },
+        {
+          "path": "src/providers/garmin/local.mjs",
+          "line": 17,
+          "end_line": 35
+        },
+        {
+          "path": "src/providers/whoop/local.mjs",
+          "line": 202,
+          "end_line": 231
+        }
+      ]
+    },
+    {
+      "id": "api",
+      "type": "cloud",
+      "label": "WHOOP / Garmin",
+      "sublabel": "Official API / unofficial",
+      "pos": [
+        940,
+        260
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/providers/whoop/index.mjs",
+          "line": 8,
+          "end_line": 16
+        },
+        {
+          "path": "src/providers/garmin/protocol.mjs",
+          "line": 185,
+          "end_line": 217
+        },
+        {
+          "path": "README.md",
+          "line": 9,
+          "end_line": 11
+        }
+      ]
+    },
+    {
+      "id": "vault",
+      "type": "security",
+      "label": "Encrypted local vault",
+      "sublabel": "AES-256-GCM + scrypt",
+      "pos": [
+        640,
+        460
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/core/storage/secret-store.mjs",
+          "line": 5,
+          "end_line": 38
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "agent-entry",
+      "from": "agent",
+      "to": "entry",
+      "label": "stdio"
+    },
+    {
+      "id": "entry-pipeline",
+      "from": "entry",
+      "to": "pipeline",
+      "label": "invoke read"
+    },
+    {
+      "id": "synthetic-pipeline",
+      "from": "synthetic",
+      "to": "pipeline",
+      "label": "default"
+    },
+    {
+      "id": "pipeline-provider",
+      "from": "pipeline",
+      "to": "provider",
+      "label": "--live only"
+    },
+    {
+      "id": "pipeline-summary",
+      "from": "pipeline",
+      "to": "summary",
+      "label": "wrap data"
+    },
+    {
+      "id": "summary-checkpoint",
+      "from": "summary",
+      "to": "checkpoint",
+      "label": "CLI --output"
+    },
+    {
+      "id": "provider-api",
+      "from": "provider",
+      "to": "api",
+      "label": "HTTPS reads"
+    },
+    {
+      "id": "provider-vault",
+      "from": "provider",
+      "to": "vault",
+      "label": "restore / refresh"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Invocation and outputs",
+      "items": [
+        "Agents call the read-only MCP over stdio; CLI also runs collect/read directly.",
+        "The summary returns to its caller. read --checkpoint is a separate offline path, not the MCP default."
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Authorization stays local",
+      "items": [
+        "Explicit auth uses a local TTY. No credentials are accepted in MCP tool arguments.",
+        "WHOOP: official browser OAuth + loopback callback. Garmin: unofficial sign-in, with MFA when required.",
+        "Live startup asks for the vault passphrase again. Health reads may refresh and persist tokens.",
+        "WHOOP stores its app secret and tokens; Garmin stores session tokens, not password or MFA. Authorization alone is not a verified real read."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Data and trust boundary",
+      "items": [
+        "Self-hosted under one trusted OS account; no public HTTP or multi-user service.",
+        "The vault passphrase is not saved; an unlocked process can decrypt. Checkpoints are plaintext health summaries.",
+        "This is the current CLI wiring. Live-account acceptance, scheduling and delivery require separate verification."
+      ]
+    }
+  ]
+}

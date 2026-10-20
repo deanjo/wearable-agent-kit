@@ -1,0 +1,329 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Wearable Agent Kit · 本地单用户架构",
+    "locale": "zh-CN",
+    "output": "docs/architecture/architecture-zh-CN.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/deanjo/wearable-agent-kit",
+      "revision": "f56a5b4458155d676777f006a04e9ee6da8d7ecf"
+    }
+  },
+  "components": [
+    {
+      "id": "agent",
+      "type": "external",
+      "label": "Agent 客户端",
+      "sublabel": "可信的数据接收方",
+      "pos": [
+        40,
+        40
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/mcp/server.mjs",
+          "line": 1,
+          "end_line": 13
+        }
+      ]
+    },
+    {
+      "id": "entry",
+      "type": "frontend",
+      "label": "本地 CLI / MCP 服务",
+      "sublabel": "live 需本地 TTY 解锁",
+      "pos": [
+        340,
+        40
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/cli.mjs",
+          "line": 12,
+          "end_line": 25
+        },
+        {
+          "path": "src/mcp/server.mjs",
+          "line": 15,
+          "end_line": 28
+        }
+      ]
+    },
+    {
+      "id": "pipeline",
+      "type": "backend",
+      "label": "读取流程",
+      "sublabel": "按配置选择模式和来源",
+      "pos": [
+        640,
+        40
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/cli.mjs",
+          "line": 27,
+          "end_line": 35
+        }
+      ]
+    },
+    {
+      "id": "synthetic",
+      "type": "backend",
+      "label": "合成样例",
+      "sublabel": "默认模式 · 不联网",
+      "pos": [
+        940,
+        40
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/cli.mjs",
+          "line": 29,
+          "end_line": 32
+        }
+      ]
+    },
+    {
+      "id": "summary",
+      "type": "backend",
+      "label": "带来源说明的摘要",
+      "sublabel": "模式 · 时间 · 覆盖范围",
+      "pos": [
+        340,
+        260
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/cli.mjs",
+          "line": 32,
+          "end_line": 35
+        },
+        {
+          "path": "src/core/contracts.mjs",
+          "line": 3,
+          "end_line": 9
+        },
+        {
+          "path": "src/analysis/summary.mjs",
+          "line": 2,
+          "end_line": 5
+        }
+      ]
+    },
+    {
+      "id": "checkpoint",
+      "type": "database",
+      "label": "可选检查点",
+      "sublabel": "明文 JSON + SHA-256",
+      "pos": [
+        40,
+        260
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/core/storage/checkpoint.mjs",
+          "line": 1,
+          "end_line": 9
+        },
+        {
+          "path": "src/cli.mjs",
+          "line": 16,
+          "end_line": 16
+        },
+        {
+          "path": "src/cli.mjs",
+          "line": 35,
+          "end_line": 35
+        }
+      ]
+    },
+    {
+      "id": "provider",
+      "type": "backend",
+      "label": "本地 Provider 适配器",
+      "sublabel": "LIVE · 每次只选一个",
+      "pos": [
+        640,
+        260
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/cli.mjs",
+          "line": 29,
+          "end_line": 30
+        },
+        {
+          "path": "src/providers/garmin/local.mjs",
+          "line": 17,
+          "end_line": 35
+        },
+        {
+          "path": "src/providers/whoop/local.mjs",
+          "line": 202,
+          "end_line": 231
+        }
+      ]
+    },
+    {
+      "id": "api",
+      "type": "cloud",
+      "label": "WHOOP / Garmin",
+      "sublabel": "官方 API / 非官方路径",
+      "pos": [
+        940,
+        260
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/providers/whoop/index.mjs",
+          "line": 8,
+          "end_line": 16
+        },
+        {
+          "path": "src/providers/garmin/protocol.mjs",
+          "line": 185,
+          "end_line": 217
+        },
+        {
+          "path": "README.md",
+          "line": 9,
+          "end_line": 11
+        }
+      ]
+    },
+    {
+      "id": "vault",
+      "type": "security",
+      "label": "本地加密凭据库",
+      "sublabel": "AES-256-GCM + scrypt",
+      "pos": [
+        640,
+        460
+      ],
+      "size": [
+        200,
+        70
+      ],
+      "sources": [
+        {
+          "path": "src/core/storage/secret-store.mjs",
+          "line": 5,
+          "end_line": 38
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "agent-entry",
+      "from": "agent",
+      "to": "entry",
+      "label": "stdio"
+    },
+    {
+      "id": "entry-pipeline",
+      "from": "entry",
+      "to": "pipeline",
+      "label": "调用读取"
+    },
+    {
+      "id": "synthetic-pipeline",
+      "from": "synthetic",
+      "to": "pipeline",
+      "label": "默认"
+    },
+    {
+      "id": "pipeline-provider",
+      "from": "pipeline",
+      "to": "provider",
+      "label": "仅 --live"
+    },
+    {
+      "id": "pipeline-summary",
+      "from": "pipeline",
+      "to": "summary",
+      "label": "封装数据"
+    },
+    {
+      "id": "summary-checkpoint",
+      "from": "summary",
+      "to": "checkpoint",
+      "label": "CLI --output"
+    },
+    {
+      "id": "provider-api",
+      "from": "provider",
+      "to": "api",
+      "label": "HTTPS 读取"
+    },
+    {
+      "id": "provider-vault",
+      "from": "provider",
+      "to": "vault",
+      "label": "恢复 / 刷新保存"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "运行与输出",
+      "items": [
+        "Agent 通过 stdio 调用只读 MCP；CLI 也可直接 collect/read。",
+        "摘要返回调用方；read --checkpoint 独立离线读回。MCP 默认不读检查点。"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "授权在本地完成",
+      "items": [
+        "显式 auth + 本地 TTY 输入；秘密不进入 MCP 参数。",
+        "WHOOP：官方浏览器 OAuth 与回环回调；Garmin：非官方登录，可需 MFA。",
+        "live 启动需重新输入 vault 口令；只读健康数据仍可能刷新并保存令牌。",
+        "WHOOP 保存应用密钥与令牌；Garmin 保存会话令牌，不保存密码或 MFA。授权成功不等于真实读取验收。"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "数据与信任边界",
+      "items": [
+        "仅单个可信 OS 账号，自托管；不是公共 HTTP 或多用户服务。",
+        "vault 口令不落盘；解锁进程可解密。检查点是明文健康摘要，需自行保护。",
+        "本图仅展示当前 CLI 装配。真实账号验收、调度、送达另行验证。"
+      ]
+    }
+  ]
+}
